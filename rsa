@@ -1,27 +1,43 @@
 #!/usr/bin/env bash
 
-# Function to find and print factors of a number
-find_factors() {
-    if [ $# -ne 1 ]; then
-        echo "Usage: find_factors <number>"
-        return 1
+# Challenge: A script for factoring numbers
+
+check_factor() {
+    if [ $# -ne 3 ]; then
+        args=("$@")
+        count=0
+        num2=1
+
+        for a in "${args[@]}"; do
+            if [ $count -gt 1 ]; then
+                num2=$(echo "$a * $num2" | bc)
+            fi
+            count=$((count + 1))
+        done
+    else
+        num2=$3
     fi
 
-    number=$1
-    factors=($(factor "$number" | cut -d ':' -f 2-))
-    factor1=${factors[1]}
-    factor2=${factors[0]}
+    num1=$2
+    num=$(echo "$1" | tr ':' '=')
 
-    echo "$number=$factor1*$factor2"
+    result=$(echo "if($num2 > $num1) 1 else 0" | bc)
+    
+    if ((result == 1)); then
+        numcp=$num1
+        num1=$num2
+        num2=$numcp
+    fi
+
+    echo "$num$num1 * $num2"
 }
 
 if [ $# -ne 1 ]; then
-    echo 'Usage: rsa <file>'
+    echo 'Usage: ./script.sh <file>'
     exit 1
 else
-    input_file=$1
-
-    while read number; do
-        find_factors "$number"
-    done < "$input_file"
+    while read i; do
+        result=$(factor "$i")
+        check_factor $result
+    done < "$1"
 fi
