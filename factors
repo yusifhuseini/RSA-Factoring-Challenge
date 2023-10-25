@@ -2,11 +2,11 @@
 
 factorize()
 {
-	if [ $# -ne 3 ];
+	if [ $# -ne 0 ];
 	then
 		args=("$@")
-		c=1
-		q=0
+		c=0
+		q=1
 		for a in ${args[*]};
 		do
 			if [ $c -gt 1 ];
