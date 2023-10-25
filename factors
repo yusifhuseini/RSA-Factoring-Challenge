@@ -1,44 +1,51 @@
 #!/usr/bin/env bash
 
-factorize() {
-    if [ $# -ne 3 ]; then
-        args=("$@")
-        c=0
-        q=1
-        for a in "${args[@]}"; do
-            if [ $c -gt 1 ]; then
-                q=$((a * q))
-            fi
-            c=$((c + 1))
-        done
-    else
-        q=$3
-    fi
+factorize()
+{
+	if [ $# -ne 3 ];
+	then
+		args=("$@")
+		c=0
+		q=1
+		for a in ${args[*]};
+		do
+			if [ $c -gt 1 ];
+			then
+				q=$(bc <<< "$a * $q")
+			fi
+			c=$((c + 1))
+		done
+	else
+		q=$3
+	fi
 
-    p=$2
-    n=${1//:/=}
+	p=$2
+	#n=$(echo "$1" | tr ':' '=')
+	n=${1//:/=}
 
-    if [ "$q" -gt "$p" ]; then
-        r=1
-    else
-        r=0
-    fi
+	#r=$(echo "if($q > $p) 1 else 0" | bc)
+	r=$(awk -v q="$q" -v p="$p" 'BEGIN {if (q > p) print 1; else print 0}')
 
-    if [ "$r" -eq 1 ]; then
-        tmp=$p
-        p=$q
-        q=$tmp
-    fi
+	if ((r == 1)); then
+		tmp=$p
+		p=$q
+		q=$tmp
+	fi
 
-    echo "$n$p*$q"
+	echo "$n$p*$q"
 }
 
-if [ $# -ne 1 ]; then
-    echo 'Usage: factors <file>'
-    exit 1
+if [ $# -ne 1 ]
+then
+	echo 'Usage: factors <file>'
+	exit 1
 else
-    while read i; do
-        r=$(factor "$i")
-        factorize $r
-    done < "$1"
+
+	while read i
+	do
+
+		r=$(factor "$i")
+		factorize $r
+
+	done < "$1"
 fi
