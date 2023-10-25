@@ -1,42 +1,45 @@
 #!/usr/bin/env bash
 
-factorize()
-{
-        if [ $# -ne 3 ]; then
-                args=("$@")
-                c=0
-                q=1
-                for a in ${args[*]}; do
-                        if [ $c -gt 1 ]; then
-                                q=$(echo $a*$q | bc)
-                        fi
-                        c=$((c + 1))
-                done
-        else
-                q=$3
-        fi
+# Function to calculate the product of factors
+product_of_factors() {
+    local num=$1
+    local p=$2
+    local q=1
 
-        p=$2
-        n=${1//:/=}
+    for ((i = 2; i <= num; i++)); do
+        while ((num % i == 0)); do
+            num=$((num / i))
+            q=$((q * i))
+        done
+    done
 
-        r=$(echo "if($q > $p) 1 else 0" | bc)
+    if ((q > p)); then
+        tmp=$p
+        p=$q
+        q=$tmp
+    fi
 
-        if [ "$r" -eq 1 ]; then
-                tmp=$p
-                p=$q
-                q=$tmp
-        fi
-
-        echo "$n$p*$q"
+    echo "$1:$p*$q"
 }
 
-if [ $# -ne 1 ]; then
-        echo 'Usage: factors <file>'
-        exit 1
-else
+# Function to parse and process a line
+factorize() {
+    local n
+    local p
+    local q
 
-        while read i; do
-                r=$(factor "$i")
-                factorize $r
-        done < "$1"
+    IFS=':' read -r n p <<< "$1"
+
+    product_of_factors "$n" "$p"
+}
+
+# Check if the correct number of arguments is provided
+if [ $# -ne 1 ]; then
+    echo 'Usage: factors <file>'
+    exit 1
 fi
+
+# Process the input file
+while read line; do
+    factorize "$line"
+done < "$1"
