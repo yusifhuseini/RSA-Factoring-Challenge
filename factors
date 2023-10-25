@@ -5,33 +5,33 @@ factorize()
 	if [ $# -ne 3 ];
 	then
 		args=("$@")
-		c=0
-		q=1
+		count=0
+		prime2=1
 		for a in ${args[@]};
 		do
-			if [ $c -gt 1 ];
+			if [ $count -gt 1 ];
 			then
-				q=$(bc <<< "$a * $q")
+				prime2=$(bc <<< "$a * $prime2")
 			fi
-			c=$((c + 1))
+			count=$((count + 1))
 		done
 	else
-		q=$3
+		prime2=$3
 	fi
 
-	p=$2
-	n=${1//:}
+	prime1=$2
+	number=${1//:}
 
-	r=$(echo "if($q > $p) 1 else 0" | bc)
+	r=$(echo "if($prime2 > $prime1) 1 else 0" | bc)
 
-	if [ "$r" -eq 1 ];
+	if [[ $r -eq 1 ]];
 	then
-		temp="$p"
-		p="$q"
-		q="$temp"
+		temp="$prime1"
+		prime1="$prime2"
+		prime2="$temp"
         fi
 
-	echo "$n=$p*$q"
+	echo "$number=$prime1*$prime2"
 }
 
 if [ $# -ne 1 ]
