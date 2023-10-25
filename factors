@@ -13,7 +13,8 @@ factorize()
 		# Loop through the provided arguments to calculate the product.
 		for a in ${args[*]}; do
 			if [ $c -gt 1 ]; then
-				q=$(echo $a*$q | bc)
+				#q=$(echo $a*$q | bc)
+				q=$(bc <<< "$a * $q")
 			fi
 			c=$((c + 1))
 		done
