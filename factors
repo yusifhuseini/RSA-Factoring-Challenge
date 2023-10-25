@@ -26,7 +26,14 @@ factorize()
 	n=$(echo "$1" | tr ':' '=')
 
 	# Calculate 'r' which is 1 if 'q' is greater than 'p', else 0.
-	r=$(echo "if($q > $p) 1 else 0" | bc)
+	# r=$(echo "if($q > $p) 1 else 0" | bc)
+
+	if [ "$num2" -gt "$num1" ]; then
+		result=1
+	else
+		result=0
+	fi
+
 	if ((r == 1)); then
 		tmp=$p
 		p=$q
