@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
 
+# Define a function 'factorize' that calculates the product of two numbers or factors.
+# If called with 3 arguments, it multiplies all three. If called with 2 arguments,
+# it calculates the product of the last two. The result is displayed as 'name=product'.
 factorize()
 {
-	if [ $# -ne 3 ];
-	then
+	if [ $# -ne 3 ]; then
 		args=("$@")
 		c=0
 		q=1
-		for a in ${args[*]};
-		do
-			if [ $c -gt 1 ];
-			then
+
+		# Loop through the provided arguments to calculate the product.
+		for a in ${args[*]}; do
+			if [ $c -gt 1 ]; then
 				q=$(echo $a*$q | bc)
 			fi
 			c=$((c + 1))
@@ -22,13 +24,15 @@ factorize()
 	p=$2
 	n=$(echo "$1" | tr ':' '=')
 
+	# Calculate 'r' which is 1 if 'q' is greater than 'p', else 0.
 	r=$(echo "if($q > $p) 1 else 0" | bc)
-		if ((r == 1)); then
-			tmp=$p
-			p=$q
-			q=$tmp
-		fi
+	if ((r == 1)); then
+		tmp=$p
+		p=$q
+		q=$tmp
+	fi
 
+	# Display the result as 'name=product'.
 	echo "$n$p*$q"
 }
 
@@ -37,10 +41,10 @@ then
 	echo 'Usage: factors <file>'
 	exit 1
 else
-
+	# Read lines from the specified file and call the 'factorize' function.
 	while read i
 	do
-
+		# Call 'factor' function to get factors and pass the result to 'factorize' for calculation.
 		r=$(factor "$i")
 		factorize $r
 
