@@ -61,10 +61,7 @@ else
         if [[ "$i" =~ ^[0-9]+$ ]]
         then
             r=$(factor "$i")
-            # Display the factors of the number
-            echo "Factors of $i: $r"
-        else
-            echo "Invalid input: $i is not a positive integer"
+	    factorize $r
         fi
     done < "$1"
 fi
