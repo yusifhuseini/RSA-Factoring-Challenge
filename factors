@@ -26,11 +26,20 @@ factorize()
 	#r=$(echo "if($q > $p) 1 else 0" | bc)
 	r=$(awk -v q="$q" -v p="$p" 'BEGIN {if (q > p) print 1; else print 0}')
 
-	if ((r == 1)); then
-		tmp=$p
-		p=$q
-		q=$tmp
+#	if ((r == 1));
+#	then
+#		tmp=$p
+#		p=$q
+#		q=$tmp
+#	fi
+
+	if [ "$r" -eq 1 ]; then
+		temp="$p"
+		p="$q"
+		q="$temp"
 	fi
+
+
 
 	echo "$n$p*$q"
 }
