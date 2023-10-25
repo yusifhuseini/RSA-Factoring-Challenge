@@ -7,11 +7,11 @@ factorize()
 		args=("$@")
 		count=0
 		prime2=1
-		for a in ${args[@]};
+		for a in "${args[@]}";
 		do
 			if [ $count -gt 1 ];
 			then
-				prime2=$(bc <<< "$a * $prime2")
+				prime2=$(bc <<< "$a*$prime2")
 			fi
 			count=$((count + 1))
 		done
