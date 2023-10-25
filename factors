@@ -5,8 +5,8 @@ factorize()
 	if [ $# -ne 3 ];
 	then
 		args=("$@")
-		c=0
-		q=1
+		c=1
+		q=0
 		for a in ${args[*]};
 		do
 			if [ $c -gt 1 ];
