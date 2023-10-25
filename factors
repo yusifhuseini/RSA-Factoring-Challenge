@@ -2,7 +2,7 @@
 
 factorize()
 {
-	if [ $# -ne 0 ];
+	if [ $# -ne 3 ];
 	then
 		args=("$@")
 		c=0
