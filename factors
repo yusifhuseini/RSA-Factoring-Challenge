@@ -21,7 +21,8 @@ factorize()
 
 	p=$2
 	#n=$(echo "$1" | tr ':' '=')
-	n=${1//:/=}
+	#n=${1//:/=}
+	n=${1//:}
 
 	#r=$(echo "if($q > $p) 1 else 0" | bc)
 	r=$(awk -v q="$q" -v p="$p" 'BEGIN {if (q > p) print 1; else print 0}')
@@ -33,15 +34,14 @@ factorize()
 #		q=$tmp
 #	fi
 
-	if [ "$r" -eq 1 ]; then
+	if [ "$r" -eq 1 ];
+	then
 		temp="$p"
 		p="$q"
 		q="$temp"
 	fi
 
-
-
-	echo "$n$p*$q"
+	echo "$n=$p*$q"
 }
 
 if [ $# -ne 1 ]
