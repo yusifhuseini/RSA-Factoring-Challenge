@@ -35,17 +35,36 @@ factorize()
 	echo "$n$p*$q"
 }
 
+#if [ $# -ne 1 ]
+#then
+#	echo 'Usage: factors <file>'
+#	exit 1
+#else
+#
+#	while read i
+#	do
+#
+#		r=$(factor "$i")
+#		factorize $r
+#
+#	done < "$1"
+#fi
+
 if [ $# -ne 1 ]
 then
-	echo 'Usage: factors <file>'
-	exit 1
+    echo 'Usage: factors <file>'
+    exit 1
 else
-
-	while read i
-	do
-
-		r=$(factor "$i")
-		factorize $r
-
-	done < "$1"
+    while read i
+    do
+        # Check if the input is a positive integer
+        if [[ "$i" =~ ^[0-9]+$ ]]
+        then
+            r=$(factor "$i")
+            # Display the factors of the number
+            echo "Factors of $i: $r"
+        else
+            echo "Invalid input: $i is not a positive integer"
+        fi
+    done < "$1"
 fi
