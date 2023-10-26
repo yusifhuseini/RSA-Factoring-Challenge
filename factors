@@ -23,9 +23,9 @@ factorize()
 	prime1=$2  # Store the second argument as prime1
 	number=${1//:}  # Remove colons (:) from the first argument and store it as "number"
 
-	r=$(echo "if($prime2 > $prime1) 1 else 0" | bc)  # Compare prime2 and prime1 using 'bc' and store the result in "r"
+	result=$(echo "if($prime2 > $prime1) 1 else 0" | bc)  # Compare prime2 and prime1 using 'bc' and store the result in "r"
 
-	if [[ $r -eq 1 ]];  # Check if r is equal to 1
+	if [[ $result -eq 1 ]];  # Check if r is equal to 1
 	then
 		temp="$prime1"  # Swap prime1 and prime2 if prime2 is greater
 		prime1="$prime2"
@@ -42,7 +42,7 @@ then
 else
 	while read i  # Loop through lines in the file specified by the argument
 	do
-		r=$(factor "$i")  # Use the "factor" command to find prime factors of the input line and store the result in "r"
-		factorize $r  # Call the "factorize" function with the result from the "factor" command
+		result=$(factor "$i")  # Use the "factor" command to find prime factors of the input line and store the result in "r"
+		factorize $result  # Call the "factorize" function with the result from the "factor" command
 	done < "$1"  # Read from the file specified as the script's argument
 fi
