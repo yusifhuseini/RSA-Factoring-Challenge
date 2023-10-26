@@ -37,7 +37,7 @@ factorize()
 
 if [ $# -ne 1 ]  # Check if the script is not called with exactly one argument
 then
-	echo 'Usage: factors <file>'  # Print a usage message
+	echo "factors <file>"  # Print a usage message
 	exit 1  # Exit with an error code
 else
 	while read i  # Loop through lines in the file specified by the argument
