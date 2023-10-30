@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+# Define a function named "factorize"
+factorize()
+{
+	if [ $# -ne 3 ]; # Check if the function is called with three arguments
+	then
+		args=("$@")  # Store the arguments in an array
+		count=0
+		prime2=1
+		for a in "${args[@]}";  # Loop through the arguments
+		do
+			if [ $count -gt 1 ];  # Check if the count is greater than 1
+			then
+				prime2=$(bc <<< "$a*$prime2")  # Multiply the argument with prime2 using 'bc'
+			fi
+			count=$((count + 1))  # Increment the count
+		done
+	else
+		prime2=$3  # If the function is called with three arguments, use the third argument as prime2
+	fi
+
+	prime1=$2  # Store the second argument as prime1
+	number=${1//:}  # Remove colons (:) from the first argument and store it as "number"
+
+	result=$(echo "if($prime2 > $prime1) 1 else 0" | bc)  # Compare prime2 and prime1 using 'bc' and store the result in "r"
+
+	if [[ $result -eq 1 ]];  # Check if r is equal to 1
+	then
+		temp="$prime1"  # Swap prime1 and prime2 if prime2 is greater
+		prime1="$prime2"
+		prime2="$temp"
+        fi
+
+	echo "$number=$prime1*$prime2"  # Print the result in the format "number=prime1*prime2"
+}
+
+if [ $# -ne 1 ]  # Check if the script is not called with exactly one argument
+then
+	echo "rsa <file>"  # Print a usage message
+	exit 1  # Exit with an error code
+else
+	while read i  # Loop through lines in the file specified by the argument
+	do
+		result=$(factor "$i")  # Use the "factor" command to find prime factors of the input line and store the result in "r"
+		factorize $result  # Call the "factorize" function with the result from the "factor" command
+	done < "$1"  # Read from the file specified as the script's argument
+fi
